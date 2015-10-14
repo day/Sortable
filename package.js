@@ -30,7 +30,7 @@ Package.onUse(function (api) {
   api.use('dburles:mongo-collection-instances@0.3.4');  // to watch collections getting created
   api.export('Sortable');  // exported on the server too, as a global to hold the array of sortable collections (for security)
   api.addFiles([
-    '../Sortable.js',
+    'main.js',
     'template.html',  // the HTML comes first, so reactivize.js can refer to the template in it
     'reactivize.js'
   ], 'client');
