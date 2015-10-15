@@ -96,16 +96,34 @@ Template.sortable.created = function () {
 		if (orderPrevItem !== null) {
 			// Element has a previous sibling, therefore it was moved down in the list.
 			// Decrease the order of intervening elements.
-			selector[orderField] = {$lte: orderPrevItem, $gt: startOrder};
+
+			if (orderPrevItem > startOrder) {
+	    	// elements are displayed in ascending order
+	    	selector[orderField] = {$lte: orderPrevItem, $gt: startOrder};
+	    } else if (orderPrevItem < startOrder) {
+	    	// elements are displayed in descending order...pass orderPrevItem as orderNextItem and vice versa
+	    	return adjustOrders(itemId, orderNextItem, orderPrevItem);
+	    }
+
 			ids = _.pluck(templateInstance.collection.find(selector, {fields: {_id: 1}}).fetch(), '_id');
+
 			Meteor.call('rubaxa:sortable/collection-update', templateInstance.collectionName, ids, orderField, -1);
 
 			// Set the order of the dropped element to the order of its predecessor, whose order was decreased
 			modifier.$set[orderField] = orderPrevItem;
 		} else {
 			// element moved up the list, increase order of intervening elements
-			selector[orderField] = {$gte: orderNextItem, $lt: startOrder};
+
+	    if (orderNextItem < startOrder) {
+	    	// elements are displayed in ascending order
+	    	selector[orderField] = {$gte: orderNextItem, $lt: startOrder};
+	    } else if (orderNextItem > startOrder) {
+	    	// elements are displayed in descending order...pass orderPrevItem as orderNextItem and vice versa
+	    	return adjustOrders(itemId, orderNextItem, orderPrevItem);
+	    }
+
 			ids = _.pluck(templateInstance.collection.find(selector, {fields: {_id: 1}}).fetch(), '_id');
+
 			Meteor.call('rubaxa:sortable/collection-update', templateInstance.collectionName, ids, orderField, 1);
 
 			// Set the order of the dropped element to the order of its successor, whose order was increased

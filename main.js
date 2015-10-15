@@ -272,6 +272,7 @@
 
 			// get the index of the dragged element within its parent
 			oldIndex = _index(target);
+			// console.log("oldIndex: " + oldIndex);
 
 			// Check filter
 			if (typeof filter === 'function') {
@@ -767,6 +768,7 @@
 
 					if (rootEl !== parentEl) {
 						newIndex = _index(dragEl);
+						// console.log("rootEl !== parentEl && newIndex === " + newIndex);
 
 						if (newIndex >= 0) {
 							// drag from one list and drop into another
@@ -787,7 +789,7 @@
 						if (dragEl.nextSibling !== nextEl) {
 							// Get the index of the dragged element within its parent
 							newIndex = _index(dragEl);
-
+              // console.log("rootEl === parentEl && newIndex === " + newIndex);
 							if (newIndex >= 0) {
 								// drag & drop within the same list
 								_dispatchEvent(this, rootEl, 'update', dragEl, rootEl, oldIndex, newIndex);
